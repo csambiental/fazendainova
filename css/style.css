@@ -312,3 +312,14 @@ table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
 .lg-doc { cursor: pointer; font-weight: 600; text-decoration: underline dotted; border-radius: 4px; padding: 3px 4px; margin-left: -4px; }
 .lg-doc:hover, .lg-doc:focus-visible { background: #fff3cd; outline: none; }
 @media (max-width: 800px) { .map-legend { font-size: .72rem; max-width: 190px; } }
+
+.lg-group { margin-top: 6px; font-weight: 600; font-size: .78rem; color: var(--verde-escuro); }
+.lg-sub { padding-left: 4px; }
+.popup .status-badge { display: inline-block; color: #fff; border-radius: 999px; padding: 1px 10px; font-size: .72rem; font-weight: 600; margin-bottom: 6px; }
+.popup-table { margin: 4px 0 0; }
+.popup-table th { padding-right: 10px; vertical-align: top; }
+.popup-table td { text-align: left; white-space: normal; }
+
+.mapboxgl-popup { z-index: 5; }
+.map-legend summary { cursor: pointer; font-weight: 700; font-size: .85rem; color: var(--verde-escuro); }
+.map-legend details[open] summary { margin-bottom: 6px; }

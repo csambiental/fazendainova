@@ -1,0 +1,241 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Sede · Captação",
+    "situacao": "Irregular",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga de direito",
+    "Portaria": "980/2021",
+    "Emissão": "08/11/2021",
+    "Validade": "08/11/2024",
+    "Vazão": "6,5 m³/h",
+    "Corpo hídrico": "Mina/Nascente",
+    "Finalidade": "Criação animal",
+    "Requerente": "Inova Agropecuária Ltda",
+    "Protocolo": "167979319"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.706829,
+     -23.472948
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Sede · Barragem",
+    "situacao": "Deferida",
+    "Interferência": "Barragem/soleira",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "10607/2026/OP-GOUT",
+    "Emissão": "23/03/2026",
+    "Validade": "19/03/2028",
+    "Corpo hídrico": "Represa",
+    "Finalidade": "Captação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "240958988"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.710375,
+     -23.476703
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Captação – Agropecuária Lunardelli · Captação",
+    "situacao": "Extinta",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "527/2021",
+    "Emissão": "20/07/2021",
+    "Validade": "20/07/2023",
+    "Vazão": "159,9 m³/h",
+    "Corpo hídrico": "Mina/Nascente",
+    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
+    "Requerente": "Agropecuária Lunardelli Ltda",
+    "Protocolo": "158057719"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.689232,
+     -23.475305
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Gema · Barragem",
+    "situacao": "Extinta",
+    "Interferência": "Barragem/soleira",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "25217/2023/OP-GOUT",
+    "Emissão": "16/08/2023",
+    "Validade": "14/08/2025",
+    "Corpo hídrico": "Córrego",
+    "Finalidade": "Acumulação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "199858432"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.684359,
+     -23.475776
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Nova · Captação",
+    "situacao": "Extinta",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "11250/2021/OP-GOUT",
+    "Emissão": "13/12/2021",
+    "Validade": "20/07/2023",
+    "Vazão": "146,7 m³/h",
+    "Corpo hídrico": "Mina/Nascente",
+    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "183265180"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.688762,
+     -23.485802
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Nova · Barragem",
+    "situacao": "Em renovação",
+    "Interferência": "Barragem/soleira",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "26031/2023/OP-GOUT",
+    "Emissão": "08/11/2023",
+    "Validade": "06/11/2025",
+    "Corpo hídrico": "Córrego",
+    "Finalidade": "Acumulação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "199858416"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.683533,
+     -23.481357
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Itaipu (Gema) · Captação",
+    "situacao": "Em regularização",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "24252/2023/OP-GOUT",
+    "Emissão": "15/05/2023",
+    "Validade": "20/07/2023",
+    "Vazão": "228,3 m³/h",
+    "Corpo hídrico": "Represa",
+    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "204364761"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.678192,
+     -23.476825
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Itaipu (Jangadinha 1) · Captação",
+    "situacao": "Em regularização",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "24249/2023/OP-GOUT",
+    "Emissão": "15/05/2023",
+    "Validade": "20/07/2023",
+    "Vazão": "152,2 m³/h",
+    "Corpo hídrico": "Represa",
+    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "204364770"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.677897,
+     -23.478409
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Itaipu (Farinheira) · Captação",
+    "situacao": "Em regularização",
+    "Interferência": "Captação superficial",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "24254/2023/OP-GOUT",
+    "Emissão": "23/05/2023",
+    "Validade": "20/07/2023",
+    "Vazão": "187,75 m³/h",
+    "Corpo hídrico": "Represa",
+    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "204364745"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.675514,
+     -23.475784
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "nome": "Represa Itaipu (Farinheira) · Barragem",
+    "situacao": "Irregular",
+    "Interferência": "Barragem/soleira",
+    "Tipo de portaria": "outorga prévia",
+    "Portaria": "24756/2023/OP-GOUT",
+    "Emissão": "06/07/2023",
+    "Validade": "05/07/2025",
+    "Corpo hídrico": "Córrego",
+    "Finalidade": "Acumulação",
+    "Requerente": "Inova Agropecuaria Ltda",
+    "Protocolo": "199858386"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.67535,
+     -23.475875
+    ]
+   }
+  }
+ ]
+}

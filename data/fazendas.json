@@ -85,6 +85,11 @@
           "nota": "Processo protocolado no IAT em 2020."
         },
         {
+          "item": "Regularizar a captação da Represa Sede (portaria 980/2021)",
+          "status": "Pendente",
+          "nota": "Portaria vencida em 11/2024; situação no IAT: irregular. A barragem da Represa Sede tem outorga prévia deferida até 03/2028."
+        },
+        {
           "item": "Nova lagoa de contenção de efluentes",
           "status": "Pendente",
           "nota": "Prevista no PCPA para ampliar a capacidade de armazenamento."
@@ -195,13 +200,33 @@
         {
           "item": "Outorga de uso de recursos hídricos (barragens e irrigação)",
           "status": "Em andamento",
-          "nota": "Protocolo de outorga registrado em 2020.",
+          "nota": "10 pontos de outorga no IAT: 1 deferido (barragem da Represa Sede, válida até 03/2028), 1 em renovação, 3 em regularização, 2 irregulares e 3 extintos. Veja os pontos no mapa.",
           "documentos": [
             {
               "titulo": "Protocolo de outorga (2020)",
               "arquivo": "docs/protocolo_outorga_2020.pdf"
             }
           ]
+        },
+        {
+          "item": "Regularizar a barragem da Represa Itaipu (Farinheira) (portaria 24756/2023)",
+          "status": "Pendente",
+          "nota": "Outorga prévia vencida em 07/2025; situação no IAT: irregular."
+        },
+        {
+          "item": "Renovar a outorga da barragem da Represa Gema (portaria 25217/2023)",
+          "status": "Pendente",
+          "nota": "Outorga prévia vencida em 08/2025; situação no IAT: extinta."
+        },
+        {
+          "item": "Renovar a outorga da barragem da Represa Nova (portaria 26031/2023)",
+          "status": "Em andamento",
+          "nota": "Situação no IAT: em renovação (validade anterior 11/2025)."
+        },
+        {
+          "item": "Regularizar as captações da Represa Itaipu (Gema, Jangadinha 1 e Farinheira)",
+          "status": "Em andamento",
+          "nota": "Portarias de 2023 com situação no IAT: em regularização."
         },
         {
           "item": "Recomposição ou compensação de Reserva Legal (déficit de 35,60 ha)",
@@ -251,6 +276,32 @@
       "arquivo": "data/represas.geojson",
       "tipo": "circle",
       "cor": "#1e88e5"
+    },
+    {
+      "id": "outorgas",
+      "nome": "Outorgas de recursos hídricos (IAT)",
+      "arquivo": "data/outorgas.geojson",
+      "tipo": "circle",
+      "cor_por": "situacao",
+      "cores": {
+        "Deferida": "#2e9e5b",
+        "Em renovação": "#e0a100",
+        "Em regularização": "#f57c00",
+        "Irregular": "#d43d3d",
+        "Extinta": "#8d969c"
+      },
+      "campos": [
+        "Interferência",
+        "Tipo de portaria",
+        "Portaria",
+        "Emissão",
+        "Validade",
+        "Vazão",
+        "Corpo hídrico",
+        "Finalidade",
+        "Requerente",
+        "Protocolo"
+      ]
     }
   ]
 }

@@ -175,14 +175,26 @@ function renderLegenda() {
     if (!el) return;
     const itens = [];
     fazendas.forEach(f => itens.push(`<div class="lg-item"><i class="lg-area" style="border-color:${f.cor};background:${f.cor}33"></i>${esc(f.nome)}</div>`));
-    camadas.forEach(c => itens.push(`<div class="lg-item"><i class="${c.tipo === 'fill' ? 'lg-fill' : 'lg-dot'}" style="background:${c.cor}"></i>${esc(c.nome)}</div>`));
+    camadas.forEach(c => {
+        if (c.cor_por && c.cores) {
+            const feats = (camadasData[c.id] || {}).features || [];
+            const sub = Object.entries(c.cores).map(([k, cor]) => {
+                const n = feats.filter(f => f.properties[c.cor_por] === k).length;
+                return n ? `<div class="lg-item lg-sub"><i class="lg-dot" style="background:${cor}"></i>${esc(k)} (${n})</div>` : '';
+            }).join('');
+            itens.push(`<div class="lg-group">${esc(c.nome)}</div>${sub}`);
+        } else {
+            itens.push(`<div class="lg-item"><i class="${c.tipo === 'fill' ? 'lg-fill' : 'lg-dot'}" style="background:${c.cor}"></i>${esc(c.nome)}</div>`);
+        }
+    });
     fazendas.forEach(f => (f.pontos || []).forEach(p => {
         const conteudo = `<i class="lg-ring" style="border-color:${f.cor}"></i>${esc(p.nome)}`;
         itens.push(p.documento
             ? `<button type="button" class="lg-item lg-doc" data-titulo="${esc(p.documento.titulo)}" data-arquivo="${esc(p.documento.arquivo)}" title="Ver ${esc(p.documento.titulo)}">${conteudo} 📄</button>`
             : `<div class="lg-item">${conteudo}</div>`);
     }));
-    el.innerHTML = `<h4>Legenda</h4>${itens.join('')}`;
+    const aberta = window.matchMedia('(min-width: 801px)').matches ? ' open' : '';
+    el.innerHTML = `<details${aberta}><summary>Legenda</summary>${itens.join('')}</details>`;
     el.querySelectorAll('.lg-doc').forEach(b => b.addEventListener('click', () => abrirDocumento(b.dataset.titulo, b.dataset.arquivo)));
 }
 
@@ -215,8 +227,11 @@ function adicionarCamadas() {
             map.addLayer({ id: `cam-${c.id}`, type: 'fill', source: `cam-${c.id}`, paint: { 'fill-color': c.cor, 'fill-opacity': 0.45 } });
             map.addLayer({ id: `cam-${c.id}-line`, type: 'line', source: `cam-${c.id}`, paint: { 'line-color': '#0b3d24', 'line-width': 1.5 } });
         } else {
+            const cor = c.cor_por && c.cores
+                ? ['match', ['get', c.cor_por], ...Object.entries(c.cores).flat(), '#777777']
+                : c.cor;
             map.addLayer({ id: `cam-${c.id}`, type: 'circle', source: `cam-${c.id}`,
-                paint: { 'circle-radius': 8, 'circle-color': c.cor, 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 } });
+                paint: { 'circle-radius': c.cor_por ? 7 : 8, 'circle-color': cor, 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 } });
         }
         try {
             map.addLayer({
@@ -333,8 +348,15 @@ map.on('click', (e) => {
         const hit = map.queryRenderedFeatures(e.point, { layers: camIds });
         if (hit.length) {
             const p = hit[0].properties;
-            new mapboxgl.Popup({ maxWidth: '280px' }).setLngLat(e.lngLat)
-                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3><p>${esc(p.descricao || '')}</p></div>`).addTo(map);
+            const c = (window.camadasCfg || []).find(x => `cam-${x.id}` === hit[0].layer.id) || {};
+            const badge = c.cor_por && p[c.cor_por]
+                ? `<span class="status-badge" style="background:${(c.cores || {})[p[c.cor_por]] || '#777'}">${esc(p[c.cor_por])}</span>` : '';
+            const tabela = (c.campos || []).filter(k => p[k]).map(k => `<tr><th>${esc(k)}</th><td>${esc(p[k])}</td></tr>`).join('');
+            new mapboxgl.Popup({ maxWidth: '320px' }).setLngLat(hit[0].geometry.type === 'Point' ? hit[0].geometry.coordinates : e.lngLat)
+                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3>${badge}
+                    ${p.descricao ? `<p>${esc(p.descricao)}</p>` : ''}
+                    ${tabela ? `<table class="ind popup-table">${tabela}</table>` : ''}
+                    ${docBotao(p.doc_titulo, p.doc_arquivo)}</div>`).addTo(map);
             return;
         }
     }
@@ -413,6 +435,7 @@ async function iniciar() {
     }));
     camadas = dados.camadas || [];
     window.camadasExtras = camadas.map(c => `cam-${c.id}`);
+    window.camadasCfg = camadas;
     await Promise.all(camadas.map(async c => {
         try { camadasData[c.id] = await (await fetch(c.arquivo, { cache: 'no-cache' })).json(); }
         catch (err) { console.error(`Não foi possível carregar ${c.arquivo}`, err); }
