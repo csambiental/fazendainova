@@ -1,0 +1,313 @@
+// =====================================================================
+// Mapa interativo de cliente – CS Consultoria Ambiental
+// Dados: data/fazendas.json (fazendas, CAR, área, adequações e status)
+//        data/<fazenda>.geojson (perímetros)
+// Para atualizar o andamento, basta mudar o "status" de cada adequação
+// em data/fazendas.json: "Pendente", "Em andamento" ou "Concluída".
+// =====================================================================
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiY3NhbWJpZW50YWwiLCJhIjoiY205MWk4eHU4MDE3czJxcHNqamR4emd5aiJ9.e8K-ENRHJwXTz_FGGwYExg';
+
+const STATUS = {
+    'Concluída':    { cor: '#2e9e5b', classe: 'ok' },
+    'Em andamento': { cor: '#e0a100', classe: 'andamento' },
+    'Pendente':     { cor: '#9aa0a6', classe: 'pendente' }
+};
+const ORDEM_STATUS = ['Concluída', 'Em andamento', 'Pendente'];
+
+// Paleta das fazendas (cores distintas e legíveis sobre o satélite)
+const PALETA = ['#ff6b4a', '#4fc3f7', '#ba68c8', '#ffd54f', '#81c784', '#f06292', '#4db6ac', '#ffb74d'];
+
+let fazendas = [];
+let geojsons = {};
+let selecionada = null;
+let mostrarPreenchimento = true;
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/satellite-streets-v12',
+    center: [-49.955, -21.75],
+    zoom: 11,
+    preserveDrawingBuffer: true
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-left');
+
+// ---------- utilidades ----------
+const fmt = (n, casas = 0) => Number(n).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
+const esc = (t) => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// Rótulo no singular/plural: "1 concluída", "2 concluídas"
+function rotulo(status, n) {
+    const plural = { 'Concluída': 'concluídas', 'Em andamento': 'em andamento', 'Pendente': 'pendentes' };
+    return n === 1 ? status.toLowerCase() : plural[status];
+}
+
+function contarStatus(lista) {
+    const c = { 'Concluída': 0, 'Em andamento': 0, 'Pendente': 0 };
+    lista.forEach(a => { c[a.status in c ? a.status : 'Pendente']++; });
+    return c;
+}
+
+// Barra empilhada: concluída | em andamento | pendente
+function barraProgresso(cont, total) {
+    if (!total) return '';
+    return ORDEM_STATUS.map(s => {
+        const pct = cont[s] / total * 100;
+        return pct > 0 ? `<span style="width:${pct}%;background:${STATUS[s].cor}" title="${s}: ${cont[s]}"></span>` : '';
+    }).join('');
+}
+
+function boundsDe(geojson) {
+    const b = turf.bbox(geojson);
+    return [[b[0], b[1]], [b[2], b[3]]];
+}
+
+// ---------- painel lateral ----------
+function renderResumo() {
+    const todas = fazendas.flatMap(f => f.adequacoes);
+    const cont = contarStatus(todas);
+    const areaTotal = fazendas.reduce((s, f) => s + f.area_ha, 0);
+    document.getElementById('kpiFazendas').textContent = fazendas.length;
+    document.getElementById('kpiArea').textContent = fmt(areaTotal);
+    document.getElementById('kpiAdequacoes').textContent = todas.length;
+    const pct = todas.length ? Math.round(cont['Concluída'] / todas.length * 100) : 0;
+    document.getElementById('kpiPct').textContent = `${pct}% concluído`;
+    document.getElementById('progressTotal').innerHTML = barraProgresso(cont, todas.length);
+    document.getElementById('statusLegend').innerHTML = ORDEM_STATUS.map(s =>
+        `<span class="chip"><i style="background:${STATUS[s].cor}"></i>${cont[s]} ${rotulo(s, cont[s])}</span>`).join('');
+}
+
+function renderFazendas() {
+    const el = document.getElementById('farmList');
+    el.innerHTML = fazendas.map(f => {
+        const cont = contarStatus(f.adequacoes);
+        const aberta = selecionada === f.id;
+        const itens = f.adequacoes.map(a => {
+            const st = STATUS[a.status] || STATUS['Pendente'];
+            const quando = a.concluida_em ? ` · ${esc(a.concluida_em)}` : '';
+            const nota = a.nota ? `<span class="item-note">${esc(a.nota)}</span>` : '';
+            const docs = (a.documentos || []).map(d =>
+                `<button type="button" class="doc-btn" data-arquivo="${esc(d.arquivo)}" data-titulo="${esc(d.titulo)}">📄 ${esc(d.titulo)}</button>`).join('');
+            const extra = (nota || docs) ? `<span class="item-extra">${nota}${docs ? `<span class="doc-list">${docs}</span>` : ''}</span>` : '';
+            return `<li><span class="status-dot" style="background:${st.cor}"></span>
+                        <span class="item-text">${esc(a.item)}</span>
+                        <span class="status-tag ${st.classe}">${esc(a.status)}${quando}</span>${extra}</li>`;
+        }).join('');
+        return `
+        <article class="farm ${aberta ? 'open' : ''}" data-id="${f.id}">
+            <button class="farm-head" type="button" aria-expanded="${aberta}">
+                <span class="swatch" style="background:${f.cor}"></span>
+                <span class="farm-name">${esc(f.nome)}</span>
+                <span class="farm-meta">${fmt(f.area_ha, 1)} ha · ${cont['Concluída']}/${f.adequacoes.length}</span>
+            </button>
+            <div class="mini-progress">${barraProgresso(cont, f.adequacoes.length)}</div>
+            <div class="farm-body">
+                <dl>
+                    <dt>CAR</dt><dd class="mono">${esc(f.car)}</dd>
+                    <dt>Área declarada</dt><dd>${fmt(f.area_ha, 2)} ha</dd>
+                </dl>
+                <h3>Adequações (${f.adequacoes.length})</h3>
+                <ul class="adeq-list">${itens}</ul>
+                <a class="link" href="https://www.registrorural.com.br/car/item/${encodeURIComponent(f.car)}" target="_blank" rel="noopener">Consultar o CAR no Registro Rural ↗</a>
+            </div>
+        </article>`;
+    }).join('');
+
+    el.querySelectorAll('.doc-btn').forEach(btn => {
+        btn.addEventListener('click', () => abrirDocumento(btn.dataset.titulo, btn.dataset.arquivo));
+    });
+    el.querySelectorAll('.farm-head').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.closest('.farm').dataset.id;
+            selecionarFazenda(selecionada === id ? null : id, true);
+        });
+    });
+}
+
+// ---------- visualizador de documentos ----------
+const docDialog = document.getElementById('docDialog');
+function abrirDocumento(titulo, arquivo) {
+    document.getElementById('docTitle').textContent = titulo;
+    document.getElementById('docFrame').src = arquivo;
+    document.getElementById('docOpen').href = arquivo;
+    document.getElementById('docDownload').href = arquivo;
+    docDialog.showModal();
+}
+document.getElementById('docClose').addEventListener('click', () => docDialog.close());
+docDialog.addEventListener('click', (e) => { if (e.target === docDialog) docDialog.close(); });
+docDialog.addEventListener('close', () => { document.getElementById('docFrame').src = 'about:blank'; });
+
+// Documentos de uma fazenda (sem repetir)
+function documentosDa(f) {
+    const vistos = new Map();
+    f.adequacoes.forEach(a => (a.documentos || []).forEach(d => vistos.set(d.arquivo, d)));
+    return [...vistos.values()];
+}
+
+// ---------- mapa ----------
+function adicionarCamadas() {
+    fazendas.forEach(f => {
+        const g = geojsons[f.id];
+        if (!g || map.getSource(f.id)) return;
+        map.addSource(f.id, { type: 'geojson', data: g });
+        map.addLayer({
+            id: `${f.id}-fill`, type: 'fill', source: f.id,
+            layout: { visibility: mostrarPreenchimento ? 'visible' : 'none' },
+            paint: { 'fill-color': f.cor, 'fill-opacity': 0.18 }
+        });
+        map.addLayer({
+            id: `${f.id}-halo`, type: 'line', source: f.id,
+            paint: { 'line-color': '#000000', 'line-width': 5, 'line-opacity': 0.35 }
+        });
+        map.addLayer({
+            id: `${f.id}-line`, type: 'line', source: f.id,
+            paint: { 'line-color': f.cor, 'line-width': 2.5 }
+        });
+    });
+    // Rótulos com o nome das fazendas
+    if (!map.getSource('rotulos')) try {
+        map.addSource('rotulos', {
+            type: 'geojson',
+            data: {
+                type: 'FeatureCollection',
+                features: fazendas.filter(f => geojsons[f.id]).map(f => ({
+                    type: 'Feature',
+                    properties: { nome: f.nome.replace('Fazenda ', '') },
+                    geometry: turf.pointOnFeature(geojsons[f.id]).geometry
+                }))
+            }
+        });
+        map.addLayer({
+            id: 'rotulos', type: 'symbol', source: 'rotulos',
+            layout: { 'text-field': ['get', 'nome'], 'text-size': 13, 'text-font': ['DIN Pro Bold', 'Arial Unicode MS Bold'], 'text-max-width': 10 },
+            paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 1.5 }
+        });
+    } catch (err) {
+        console.warn('Rótulos não disponíveis neste estilo de mapa', err);
+    }
+    destacarSelecionada();
+}
+
+function destacarSelecionada() {
+    fazendas.forEach(f => {
+        if (!map.getLayer(`${f.id}-line`)) return;
+        const ativa = selecionada === f.id;
+        const apagada = selecionada && !ativa;
+        map.setPaintProperty(`${f.id}-line`, 'line-width', ativa ? 4.5 : 2.5);
+        map.setPaintProperty(`${f.id}-line`, 'line-opacity', apagada ? 0.5 : 1);
+        map.setPaintProperty(`${f.id}-fill`, 'fill-opacity', ativa ? 0.3 : (apagada ? 0.08 : 0.18));
+    });
+}
+
+function enquadrarTodas() {
+    const todas = { type: 'FeatureCollection', features: Object.values(geojsons).flatMap(g => g.features) };
+    if (todas.features.length) map.fitBounds(boundsDe(todas), { padding: 50, duration: 800 });
+}
+
+function selecionarFazenda(id, voar) {
+    selecionada = id;
+    renderFazendas();
+    destacarSelecionada();
+    if (id && voar && geojsons[id]) {
+        map.fitBounds(boundsDe(geojsons[id]), { padding: 60, duration: 900 });
+    }
+    if (id) {
+        const card = document.querySelector(`.farm[data-id="${id}"]`);
+        if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
+
+function popupHtml(f) {
+    const cont = contarStatus(f.adequacoes);
+    return `<div class="popup">
+        <h3><span class="swatch" style="background:${f.cor}"></span>${esc(f.nome)}</h3>
+        <p><strong>Área declarada:</strong> ${fmt(f.area_ha, 2)} ha</p>
+        <p><strong>CAR:</strong> <span class="mono">${esc(f.car)}</span></p>
+        <p><strong>Adequações:</strong> ${f.adequacoes.length}
+           (${cont['Concluída']} concluídas, ${cont['Em andamento']} em andamento, ${cont['Pendente']} pendentes)</p>
+        <div class="mini-progress">${barraProgresso(cont, f.adequacoes.length)}</div>
+        ${documentosDa(f).map(d => `<button type="button" class="doc-btn" onclick="abrirDocumento('${esc(d.titulo)}', '${esc(d.arquivo)}')">📄 ${esc(d.titulo)}</button>`).join('')}
+        <p class="popup-hint">Veja a lista completa no painel ao lado.</p>
+    </div>`;
+}
+
+map.on('click', (e) => {
+    const camadas = fazendas.map(f => `${f.id}-fill`).filter(id => map.getLayer(id));
+    const hits = camadas.length ? map.queryRenderedFeatures(e.point, { layers: camadas }) : [];
+    // Com o preenchimento oculto, ainda permite clicar dentro do perímetro
+    let id = hits.length ? hits[0].properties.id : null;
+    if (!id) {
+        const pt = turf.point([e.lngLat.lng, e.lngLat.lat]);
+        const f = fazendas.find(f => geojsons[f.id] && turf.booleanPointInPolygon(pt, geojsons[f.id].features[0]));
+        id = f ? f.id : null;
+    }
+    if (!id) return;
+    const f = fazendas.find(x => x.id === id);
+    new mapboxgl.Popup({ maxWidth: '300px' }).setLngLat(e.lngLat).setHTML(popupHtml(f)).addTo(map);
+    selecionarFazenda(id, false);
+});
+
+map.on('mousemove', (e) => {
+    const camadas = fazendas.map(f => `${f.id}-fill`).filter(id => map.getLayer(id));
+    const over = camadas.length && map.queryRenderedFeatures(e.point, { layers: camadas }).length > 0;
+    map.getCanvas().style.cursor = over ? 'pointer' : '';
+});
+
+// Recoloca as camadas sempre que o estilo do mapa muda
+map.on('style.load', () => { if (fazendas.length) adicionarCamadas(); });
+
+// ---------- controles ----------
+document.querySelectorAll('.segmented button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.segmented button').forEach(b => b.classList.toggle('active', b === btn));
+        map.setStyle(btn.dataset.style);
+    });
+});
+document.getElementById('toggleFill').addEventListener('change', (e) => {
+    mostrarPreenchimento = e.target.checked;
+    fazendas.forEach(f => {
+        if (map.getLayer(`${f.id}-fill`)) map.setLayoutProperty(`${f.id}-fill`, 'visibility', mostrarPreenchimento ? 'visible' : 'none');
+    });
+});
+document.getElementById('centerMap').addEventListener('click', () => { selecionarFazenda(null, false); enquadrarTodas(); });
+
+const toggle = document.getElementById('panelToggle');
+toggle.addEventListener('click', () => {
+    const fechado = document.body.classList.toggle('panel-closed');
+    toggle.setAttribute('aria-expanded', String(!fechado));
+    setTimeout(() => map.resize(), 250);
+});
+
+// ---------- carregamento ----------
+async function iniciar() {
+    const resp = await fetch('data/fazendas.json', { cache: 'no-cache' });
+    const dados = await resp.json();
+    const cliente = dados.cliente || {};
+    document.getElementById('clienteNome').textContent = cliente.nome || 'Mapa interativo';
+    document.getElementById('clienteSub').textContent = cliente.subtitulo || '';
+    if (cliente.nome) document.title = `${cliente.nome} – Mapa Interativo`;
+    if (cliente.centro) map.jumpTo({ center: cliente.centro, zoom: cliente.zoom || 12 });
+    fazendas = dados.fazendas.map((f, i) => ({ ...f, cor: f.cor || PALETA[i % PALETA.length] }));
+    if (!fazendas.length) {
+        document.getElementById('farmList').innerHTML = '<p class="hint">Mapa em preparação. Os dados das propriedades serão incluídos em breve.</p>';
+    }
+    if (dados.atualizado_em) {
+        const [a, m, d] = dados.atualizado_em.split('-');
+        document.getElementById('updatedAt').textContent = `${d}/${m}/${a}`;
+    }
+    await Promise.all(fazendas.map(async f => {
+        try {
+            const r = await fetch(f.arquivo, { cache: 'no-cache' });
+            geojsons[f.id] = await r.json();
+        } catch (err) {
+            console.error(`Não foi possível carregar ${f.arquivo}`, err);
+        }
+    }));
+    renderResumo();
+    renderFazendas();
+    const pronto = () => { adicionarCamadas(); enquadrarTodas(); };
+    if (map.isStyleLoaded()) pronto(); else map.once('load', pronto);
+}
+iniciar();

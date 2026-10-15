@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interativo – CS Consultoria Ambiental</title>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <img src="logo.png" alt="CS Consultoria Ambiental" class="logo">
+        <div class="topbar-title">
+            <h1 id="clienteNome">Carregando…</h1>
+            <p id="clienteSub"></p>
+        </div>
+        <button class="panel-toggle" id="panelToggle" aria-expanded="true" aria-controls="sidebar">Painel</button>
+    </header>
+
+    <main class="layout">
+        <aside class="sidebar" id="sidebar">
+            <section class="card">
+                <h2>Resumo geral</h2>
+                <div class="kpis">
+                    <div class="kpi"><span class="kpi-value" id="kpiFazendas">–</span><span class="kpi-label">fazendas</span></div>
+                    <div class="kpi"><span class="kpi-value" id="kpiArea">–</span><span class="kpi-label">hectares</span></div>
+                    <div class="kpi"><span class="kpi-value" id="kpiAdequacoes">–</span><span class="kpi-label">adequações</span></div>
+                </div>
+                <div class="progress-label">
+                    <span>Andamento das adequações</span>
+                    <strong id="kpiPct">0%</strong>
+                </div>
+                <div class="progress" id="progressTotal" aria-label="Andamento das adequações"></div>
+                <div class="status-legend" id="statusLegend"></div>
+            </section>
+
+            <section class="card">
+                <h2>Fazendas</h2>
+                <p class="hint">Clique numa fazenda para ver as adequações e localizá-la no mapa.</p>
+                <div id="farmList" class="farm-list"></div>
+            </section>
+
+            <section class="card">
+                <h2>Mapa</h2>
+                <div class="controls">
+                    <div class="segmented" role="group" aria-label="Estilo do mapa">
+                        <button type="button" data-style="mapbox://styles/mapbox/satellite-streets-v12" class="active">Satélite</button>
+                        <button type="button" data-style="mapbox://styles/mapbox/outdoors-v12">Mapa</button>
+                    </div>
+                    <label class="switch"><input type="checkbox" id="toggleFill" checked> Preenchimento das fazendas</label>
+                    <button type="button" class="btn" id="centerMap">Ver todas as fazendas</button>
+                </div>
+            </section>
+
+            <p class="footnote">Atualizado em <span id="updatedAt"></span> · CS Consultoria Ambiental</p>
+        </aside>
+
+        <section class="map-wrap">
+            <div id="map"></div>
+        </section>
+    </main>
+
+    <dialog id="docDialog" class="doc-dialog" aria-labelledby="docTitle">
+        <header>
+            <h2 id="docTitle">Documento</h2>
+            <button type="button" id="docClose" class="close" aria-label="Fechar">×</button>
+        </header>
+        <iframe id="docFrame" title="Visualização do documento"></iframe>
+        <footer>
+            <a id="docOpen" class="btn" target="_blank" rel="noopener">Abrir em nova aba</a>
+            <a id="docDownload" class="btn btn-solid" download>Baixar PDF</a>
+        </footer>
+    </dialog>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

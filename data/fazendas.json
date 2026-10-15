@@ -1,0 +1,13 @@
+{
+  "cliente": {
+    "nome": "Fazenda Inova",
+    "subtitulo": "Diagnóstico e acompanhamento ambiental",
+    "centro": [
+      -51.16,
+      -23.31
+    ],
+    "zoom": 9
+  },
+  "atualizado_em": "2026-10-15",
+  "fazendas": []
+}
