@@ -343,3 +343,4 @@ table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
 .aj-grid button, .aj-raio button { border: 1px solid var(--verde); background: #f1f8f3; border-radius: 6px; padding: 5px 0; cursor: pointer; font: inherit; }
 .aj-raio { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; text-align: center; }
 .aj-passo { display: flex; gap: 6px; align-items: center; }
+#ajTexto { width: 100%; font: .7rem ui-monospace, Consolas, monospace; resize: vertical; border: 1px solid var(--borda); border-radius: 6px; padding: 4px; }

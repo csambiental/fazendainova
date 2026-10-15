@@ -502,7 +502,8 @@ if (new URLSearchParams(location.search).has('ajustar')) {
         <div class="aj-raio"><button data-r="-5">− raio</button><span id="ajRaio">–</span><button data-r="5">+ raio</button></div>
         <label class="aj-passo"><input type="checkbox" id="ajFino"> passos de 1 m</label>
         <button id="ajCopiar" class="btn btn-solid">Copiar ajustes</button>
-        <small id="ajMsg"></small>`;
+        <small id="ajMsg"></small>
+        <textarea id="ajTexto" readonly rows="7" placeholder="Os ajustes aparecem aqui"></textarea>`;
     document.querySelector('.map-wrap').appendChild(painel);
 
     const fonte = () => map.getSource('cam-pivos');
@@ -539,10 +540,38 @@ if (new URLSearchParams(location.search).has('ajustar')) {
         selecionado.properties.raio_m = Math.max(50, selecionado.properties.raio_m + Math.sign(Number(b.dataset.r)) * passo());
         redesenhar(selecionado);
     }));
+    const textoAjustes = () => 'AJUSTE PIVÔS\n' + dados().features.map(f =>
+        `${f.properties.nome}: centro ${f.properties.centro[1]}, ${f.properties.centro[0]} · raio ${f.properties.raio_m} m`).join('\n');
+    const atualizarTexto = () => {
+        const t = textoAjustes();
+        document.getElementById('ajTexto').value = t;
+        try { localStorage.setItem('ajustePivos', JSON.stringify(dados().features.map(f => [f.properties.nome, f.properties.centro, f.properties.raio_m]))); } catch {}
+        return t;
+    };
+    // Recupera ajustes feitos antes neste navegador (se a página foi recarregada)
+    map.once('idle', () => {
+        try {
+            const salvo = JSON.parse(localStorage.getItem('ajustePivos') || 'null');
+            if (salvo && dados()) {
+                salvo.forEach(([nome, centro, raio]) => {
+                    const f = dados().features.find(x => x.properties.nome === nome);
+                    if (f) { f.properties.centro = centro; f.properties.raio_m = raio; redesenhar(f); }
+                });
+                document.getElementById('ajMsg').textContent = 'Ajustes anteriores recuperados.';
+                atualizarTexto();
+            }
+        } catch {}
+    });
+    painel.querySelectorAll('[data-m],[data-r]').forEach(b => b.addEventListener('click', () => { if (selecionado) atualizarTexto(); }));
     document.getElementById('ajCopiar').addEventListener('click', async () => {
-        const texto = 'AJUSTE PIVÔS\n' + dados().features.map(f =>
-            `${f.properties.nome}: centro ${f.properties.centro[1]}, ${f.properties.centro[0]} · raio ${f.properties.raio_m} m`).join('\n');
-        try { await navigator.clipboard.writeText(texto); document.getElementById('ajMsg').textContent = 'Copiado! Cole na conversa.'; }
-        catch { prompt('Copie o texto abaixo:', texto); }
+        const t = atualizarTexto();
+        const area = document.getElementById('ajTexto');
+        area.focus(); area.select();
+        let ok = false;
+        try { await navigator.clipboard.writeText(t); ok = true; } catch {}
+        if (!ok) { try { ok = document.execCommand('copy'); } catch {} }
+        document.getElementById('ajMsg').textContent = ok
+            ? 'Copiado! Cole na conversa (Ctrl + V).'
+            : 'Selecione o texto abaixo e copie com Ctrl + C.';
     });
 }
