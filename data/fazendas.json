@@ -1,13 +1,265 @@
 {
   "cliente": {
-    "nome": "Fazenda Inova",
-    "subtitulo": "Diagnóstico e acompanhamento ambiental",
+    "nome": "Inova Agropecuária",
+    "subtitulo": "Diagnóstico e acompanhamento ambiental · São Sebastião da Amoreira, PR",
     "centro": [
-      -51.16,
-      -23.31
+      -50.685,
+      -23.477
     ],
-    "zoom": 9
+    "zoom": 13
   },
   "atualizado_em": "2026-10-15",
-  "fazendas": []
+  "fazendas": [
+    {
+      "id": "AREA1",
+      "arquivo": "data/area1.geojson",
+      "nome": "Fazenda Cachoeira – sede e confinamento",
+      "car": "PR-4126009-580FECBA316642FFB49D796F599A76CF",
+      "area_ha": 185.46,
+      "cor": "#ff6b4a",
+      "situacao_car": "Em análise",
+      "indicadores": {
+        "Vegetação nativa": 37.69,
+        "Área consolidada": 139.43,
+        "APP": 12.69,
+        "Reserva Legal proposta": 37.69,
+        "Saldo de Reserva Legal": 0.63,
+        "APP a recompor": 0.03
+      },
+      "pontos": [
+        {
+          "nome": "Confinamento",
+          "coord": [
+            -50.707922,
+            -23.470149
+          ],
+          "descricao": "Confinamento de gado de corte – capacidade de 2.300 cabeças, com duas lagoas de contenção e leito de secagem de dejetos."
+        }
+      ],
+      "adequacoes": [
+        {
+          "item": "Plano de Controle de Poluição Ambiental (PCPA) do confinamento",
+          "status": "Concluída",
+          "concluida_em": "2020",
+          "nota": "Elaborado para a Licença de Operação de Regularização, com a complementação solicitada pelo IAT.",
+          "documentos": [
+            {
+              "titulo": "Plano de Controle de Poluição Ambiental (2020)",
+              "arquivo": "docs/plano_controle_poluicao_pcpa_2020.pdf"
+            },
+            {
+              "titulo": "Complementação do PCPA solicitada pelo IAT (2020)",
+              "arquivo": "docs/complementacao_pcpa_2020.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Análise de solo e de efluente para uso agrícola dos dejetos",
+          "status": "Concluída",
+          "concluida_em": "2020",
+          "documentos": [
+            {
+              "titulo": "Análise de solo e de efluente (2020)",
+              "arquivo": "docs/analise_solo_efluente_2020.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Certidão municipal de uso e ocupação do solo",
+          "status": "Concluída",
+          "concluida_em": "08/2020",
+          "documentos": [
+            {
+              "titulo": "Certidão de uso e ocupação do solo",
+              "arquivo": "docs/certidao_uso_ocupacao_solo_2020.pdf"
+            },
+            {
+              "titulo": "Croqui de localização",
+              "arquivo": "docs/croqui_localizacao.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Licença de Operação de Regularização do confinamento (IAT)",
+          "status": "Em andamento",
+          "nota": "Processo protocolado no IAT em 2020."
+        },
+        {
+          "item": "Nova lagoa de contenção de efluentes",
+          "status": "Pendente",
+          "nota": "Prevista no PCPA para ampliar a capacidade de armazenamento."
+        },
+        {
+          "item": "Projeto de biodigestores",
+          "status": "Pendente",
+          "nota": "Previsto no PCPA para aproveitamento energético dos dejetos."
+        },
+        {
+          "item": "Recomposição de APP (0,03 ha)",
+          "status": "Pendente",
+          "documentos": [
+            {
+              "titulo": "Demonstrativo do CAR",
+              "arquivo": "docs/car_demonstrativo_area1.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Acompanhamento da análise do CAR",
+          "status": "Em andamento",
+          "nota": "CAR em análise pelo órgão ambiental.",
+          "documentos": [
+            {
+              "titulo": "Demonstrativo do CAR",
+              "arquivo": "docs/car_demonstrativo_area1.pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AREA2",
+      "arquivo": "data/area2.geojson",
+      "nome": "Fazenda Sete Lagos – represas e pivô",
+      "car": "PR-4126009-950975FD4C98483D8147792940690205",
+      "area_ha": 977.94,
+      "cor": "#4fc3f7",
+      "situacao_car": "Aguardando análise",
+      "indicadores": {
+        "Vegetação nativa": 159.87,
+        "Área consolidada": 776.63,
+        "APP": 53.14,
+        "Reserva Legal proposta": 159.87,
+        "Saldo de Reserva Legal": -35.6,
+        "APP a recompor": 0.63
+      },
+      "pontos": [
+        {
+          "nome": "Pivô Chapadão",
+          "coord": [
+            -50.691022,
+            -23.479672
+          ],
+          "descricao": "Pivô central com 51,62 ha irrigados, captação na Represa Gema."
+        },
+        {
+          "nome": "Represa Gema",
+          "coord": [
+            -50.68437,
+            -23.475658
+          ],
+          "descricao": "Espelho d'água de 8,18 ha e volume de 323.713 m³."
+        },
+        {
+          "nome": "Represa Itaipu (Faxineira)",
+          "coord": [
+            -50.675261,
+            -23.4761
+          ],
+          "descricao": "Represa com estudo hidrológico e análise de risco (2023)."
+        }
+      ],
+      "adequacoes": [
+        {
+          "item": "Estudos hidrológicos e análise de risco das represas Gema e Itaipu (Faxineira)",
+          "status": "Concluída",
+          "concluida_em": "2023",
+          "documentos": [
+            {
+              "titulo": "Laudo – Represa Gema",
+              "arquivo": "docs/laudo_represa_gema.pdf"
+            },
+            {
+              "titulo": "Memorial de cálculo – Represa Gema",
+              "arquivo": "docs/memorial_represa_gema.pdf"
+            },
+            {
+              "titulo": "Laudo – Represa Itaipu (Faxineira)",
+              "arquivo": "docs/laudo_represa_itaipu_faxineira.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Memoriais de cálculo das represas Nova e Sede",
+          "status": "Concluída",
+          "concluida_em": "2023",
+          "documentos": [
+            {
+              "titulo": "Memorial de cálculo – Represa Nova",
+              "arquivo": "docs/memorial_represa_nova.pdf"
+            },
+            {
+              "titulo": "Memorial de cálculo – Represa Sede",
+              "arquivo": "docs/memorial_represa_sede.pdf"
+            },
+            {
+              "titulo": "Fluxo d'água das represas",
+              "arquivo": "docs/fluxo_agua_represas.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Projeto de irrigação do Pivô Chapadão para o IAT",
+          "status": "Concluída",
+          "concluida_em": "2024",
+          "documentos": [
+            {
+              "titulo": "Projeto de irrigação – Pivô Chapadão",
+              "arquivo": "docs/projeto_pivo_chapadao_irrigacao.pdf"
+            },
+            {
+              "titulo": "Levantamento planialtimétrico",
+              "arquivo": "docs/pivo_chapadao_planialtimetrico.pdf"
+            },
+            {
+              "titulo": "Ficha técnica do pivô",
+              "arquivo": "docs/pivo_chapadao_ficha_tecnica.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Outorga de uso de recursos hídricos (barragens e irrigação)",
+          "status": "Em andamento",
+          "nota": "Protocolo de outorga registrado em 2020.",
+          "documentos": [
+            {
+              "titulo": "Protocolo de outorga (2020)",
+              "arquivo": "docs/protocolo_outorga_2020.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Recomposição ou compensação de Reserva Legal (déficit de 35,60 ha)",
+          "status": "Pendente",
+          "documentos": [
+            {
+              "titulo": "Demonstrativo do CAR",
+              "arquivo": "docs/car_demonstrativo_area2.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Recomposição de APP (0,63 ha)",
+          "status": "Pendente",
+          "documentos": [
+            {
+              "titulo": "Demonstrativo do CAR",
+              "arquivo": "docs/car_demonstrativo_area2.pdf"
+            }
+          ]
+        },
+        {
+          "item": "Acompanhamento da análise do CAR",
+          "status": "Pendente",
+          "nota": "CAR aguardando análise pelo órgão ambiental.",
+          "documentos": [
+            {
+              "titulo": "Demonstrativo do CAR",
+              "arquivo": "docs/car_demonstrativo_area2.pdf"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }

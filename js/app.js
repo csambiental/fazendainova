@@ -107,7 +107,9 @@ function renderFazendas() {
                 <dl>
                     <dt>CAR</dt><dd class="mono">${esc(f.car)}</dd>
                     <dt>Área declarada</dt><dd>${fmt(f.area_ha, 2)} ha</dd>
+                    ${f.situacao_car ? `<dt>Situação do CAR</dt><dd>${esc(f.situacao_car)}</dd>` : ''}
                 </dl>
+                ${indicadoresHtml(f)}
                 <h3>Adequações (${f.adequacoes.length})</h3>
                 <ul class="adeq-list">${itens}</ul>
                 <a class="link" href="https://www.registrorural.com.br/car/item/${encodeURIComponent(f.car)}" target="_blank" rel="noopener">Consultar o CAR no Registro Rural ↗</a>
@@ -146,6 +148,20 @@ function documentosDa(f) {
     return [...vistos.values()];
 }
 
+// Indicadores do CAR (ha). "Saldo" negativo = déficit
+function indicadoresHtml(f) {
+    if (!f.indicadores) return '';
+    const linhas = Object.entries(f.indicadores).map(([k, v]) => {
+        const saldo = /saldo/i.test(k);
+        const recompor = /recompor/i.test(k);
+        const cls = saldo ? (v < 0 ? 'neg' : 'pos') : (recompor && v > 0 ? 'neg' : '');
+        const txt = saldo && v < 0 ? `déficit de ${fmt(-v, 2)} ha` : (saldo ? `excedente de ${fmt(v, 2)} ha` : `${fmt(v, 2)} ha`);
+        const pct = !saldo && !recompor && f.area_ha ? `<small>${fmt(v / f.area_ha * 100, 1)}%</small>` : '';
+        return `<tr class="${cls}"><th>${esc(k)}</th><td>${txt} ${pct}</td></tr>`;
+    }).join('');
+    return `<h3>Indicadores do CAR</h3><table class="ind">${linhas}</table>`;
+}
+
 // ---------- mapa ----------
 function adicionarCamadas() {
     fazendas.forEach(f => {
@@ -166,6 +182,27 @@ function adicionarCamadas() {
             paint: { 'line-color': f.cor, 'line-width': 2.5 }
         });
     });
+    // Pontos de interesse (estruturas, represas, pivôs)
+    const pontos = fazendas.flatMap(f => (f.pontos || []).map(p => ({
+        type: 'Feature',
+        properties: { nome: p.nome, descricao: p.descricao || '', fazenda: f.id, cor: f.cor },
+        geometry: { type: 'Point', coordinates: p.coord }
+    })));
+    if (pontos.length && !map.getSource('pontos')) {
+        map.addSource('pontos', { type: 'geojson', data: { type: 'FeatureCollection', features: pontos } });
+        map.addLayer({
+            id: 'pontos', type: 'circle', source: 'pontos',
+            paint: { 'circle-radius': 7, 'circle-color': '#ffffff', 'circle-stroke-color': ['get', 'cor'], 'circle-stroke-width': 3 }
+        });
+        try {
+            map.addLayer({
+                id: 'pontos-rotulo', type: 'symbol', source: 'pontos', minzoom: 13,
+                layout: { 'text-field': ['get', 'nome'], 'text-size': 12, 'text-offset': [0, 1.3], 'text-anchor': 'top', 'text-font': ['DIN Pro Medium', 'Arial Unicode MS Regular'] },
+                paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 1.3 }
+            });
+        } catch (err) { console.warn('Rótulos dos pontos indisponíveis', err); }
+    }
+
     // Rótulos com o nome das fazendas
     if (!map.getSource('rotulos')) try {
         map.addSource('rotulos', {
@@ -234,6 +271,16 @@ function popupHtml(f) {
 }
 
 map.on('click', (e) => {
+    if (map.getLayer('pontos')) {
+        const pt = map.queryRenderedFeatures(e.point, { layers: ['pontos'] });
+        if (pt.length) {
+            const p = pt[0].properties;
+            new mapboxgl.Popup({ maxWidth: '280px' }).setLngLat(pt[0].geometry.coordinates)
+                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3><p>${esc(p.descricao)}</p></div>`).addTo(map);
+            selecionarFazenda(p.fazenda, false);
+            return;
+        }
+    }
     const camadas = fazendas.map(f => `${f.id}-fill`).filter(id => map.getLayer(id));
     const hits = camadas.length ? map.queryRenderedFeatures(e.point, { layers: camadas }) : [];
     // Com o preenchimento oculto, ainda permite clicar dentro do perímetro
@@ -251,6 +298,7 @@ map.on('click', (e) => {
 
 map.on('mousemove', (e) => {
     const camadas = fazendas.map(f => `${f.id}-fill`).filter(id => map.getLayer(id));
+    if (map.getLayer('pontos')) camadas.push('pontos');
     const over = camadas.length && map.queryRenderedFeatures(e.point, { layers: camadas }).length > 0;
     map.getCanvas().style.cursor = over ? 'pointer' : '';
 });
