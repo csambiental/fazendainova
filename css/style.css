@@ -326,3 +326,8 @@ table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
 
 .lg-leaf { padding-left: 22px; font-size: .74rem; font-weight: 500; }
 .map-legend details { max-height: calc(100vh - 220px); overflow-y: auto; }
+
+.popup-resumo { margin: 4px 0 8px !important; font-size: .85rem !important; line-height: 1.45; }
+.popup-dl { margin: 0; font-size: .8rem; }
+.popup-dl dt { color: var(--texto-suave); font-size: .72rem; margin-top: 6px; }
+.popup-dl dd { margin: 0; }

@@ -376,11 +376,19 @@ map.on('click', (e) => {
             const c = (window.camadasCfg || []).find(x => `cam-${x.id}` === hit[0].layer.id) || {};
             const badge = c.cor_por && p[c.cor_por]
                 ? `<span class="status-badge" style="background:${(c.cores || {})[p[c.cor_por]] || '#777'}">${esc(p[c.cor_por])}</span>` : '';
-            const tabela = (c.campos || []).filter(k => p[k]).map(k => `<tr><th>${esc(k)}</th><td>${esc(p[k])}</td></tr>`).join('');
+            // Resumo em texto (portaria, validade e finalidade) + demais campos em lista
+            const resumo = p.Portaria
+                ? `<p class="popup-resumo"><strong>Portaria ${esc(p.Portaria)}</strong><br>
+                   ${p.Validade ? `Validade: <strong>${esc(p.Validade)}</strong><br>` : ''}
+                   ${p.Finalidade ? `Finalidade: ${esc(p.Finalidade)}` : ''}</p>` : '';
+            const jaNoResumo = p.Portaria ? ['Portaria', 'Validade', 'Finalidade'] : [];
+            const tabela = (c.campos || []).filter(k => p[k] && !jaNoResumo.includes(k))
+                .map(k => `<dt>${esc(k)}</dt><dd>${esc(p[k])}</dd>`).join('');
             new mapboxgl.Popup({ maxWidth: '320px' }).setLngLat(hit[0].geometry.type === 'Point' ? hit[0].geometry.coordinates : e.lngLat)
                 .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3>${badge}
+                    ${resumo}
                     ${p.descricao ? `<p>${esc(p.descricao)}</p>` : ''}
-                    ${tabela ? `<table class="ind popup-table">${tabela}</table>` : ''}
+                    ${tabela ? `<dl class="popup-dl">${tabela}</dl>` : ''}
                     ${docBotao(p.doc_titulo, p.doc_arquivo)}${docBotao(p.hist_titulo, p.hist_arquivo)}</div>`).addTo(map);
             return;
         }
