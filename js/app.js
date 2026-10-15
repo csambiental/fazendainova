@@ -179,8 +179,12 @@ function renderLegenda() {
         if (c.cor_por && c.cores) {
             const feats = (camadasData[c.id] || {}).features || [];
             const sub = Object.entries(c.cores).map(([k, cor]) => {
-                const n = feats.filter(f => f.properties[c.cor_por] === k).length;
-                return n ? `<div class="lg-item lg-sub"><i class="lg-dot" style="background:${cor}"></i>${esc(k)} (${n})</div>` : '';
+                const grupo = feats.filter(f => f.properties[c.cor_por] === k);
+                if (!grupo.length) return '';
+                const lista = c.listar ? grupo.map(f => f.properties.doc_arquivo
+                    ? `<button type="button" class="lg-item lg-doc lg-leaf" data-titulo="${esc(f.properties.nome)} – ${esc(f.properties.Portaria || '')}" data-arquivo="${esc(f.properties.doc_arquivo)}">${esc(f.properties.nome)} 📄</button>`
+                    : `<div class="lg-item lg-leaf">${esc(f.properties.nome)}</div>`).join('') : '';
+                return `<div class="lg-item lg-sub"><i class="lg-dot" style="background:${cor}"></i>${esc(k)} (${grupo.length})</div>${lista}`;
             }).join('');
             itens.push(`<div class="lg-group">${esc(c.nome)}</div>${sub}`);
         } else {
@@ -356,7 +360,7 @@ map.on('click', (e) => {
                 .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3>${badge}
                     ${p.descricao ? `<p>${esc(p.descricao)}</p>` : ''}
                     ${tabela ? `<table class="ind popup-table">${tabela}</table>` : ''}
-                    ${docBotao(p.doc_titulo, p.doc_arquivo)}</div>`).addTo(map);
+                    ${docBotao(p.doc_titulo, p.doc_arquivo)}${docBotao(p.hist_titulo, p.hist_arquivo)}</div>`).addTo(map);
             return;
         }
     }

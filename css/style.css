@@ -323,3 +323,6 @@ table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
 .mapboxgl-popup { z-index: 5; }
 .map-legend summary { cursor: pointer; font-weight: 700; font-size: .85rem; color: var(--verde-escuro); }
 .map-legend details[open] summary { margin-bottom: 6px; }
+
+.lg-leaf { padding-left: 22px; font-size: .74rem; font-weight: 500; }
+.map-legend details { max-height: calc(100vh - 220px); overflow-y: auto; }

@@ -4,41 +4,17 @@
   {
    "type": "Feature",
    "properties": {
-    "nome": "Represa Sede · Captação",
-    "situacao": "Irregular",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga de direito",
-    "Portaria": "980/2021",
-    "Emissão": "08/11/2021",
-    "Validade": "08/11/2024",
-    "Vazão": "6,5 m³/h",
-    "Corpo hídrico": "Mina/Nascente",
-    "Finalidade": "Criação animal",
-    "Requerente": "Inova Agropecuária Ltda",
-    "Protocolo": "167979319"
-   },
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     -50.706829,
-     -23.472948
-    ]
-   }
-  },
-  {
-   "type": "Feature",
-   "properties": {
     "nome": "Represa Sede · Barragem",
-    "situacao": "Deferida",
-    "Interferência": "Barragem/soleira",
-    "Tipo de portaria": "outorga prévia",
+    "situacao": "Vigente",
+    "Interferência": "Barragem (outorga prévia)",
     "Portaria": "10607/2026/OP-GOUT",
-    "Emissão": "23/03/2026",
     "Validade": "19/03/2028",
-    "Corpo hídrico": "Represa",
-    "Finalidade": "Captação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "240958988"
+    "Finalidade": "Acumulação para captação",
+    "Condicionantes": "Adequar o vertedouro (prazo 15/09/2026). Para a outorga de direito: comprovar o extravasor e obter manifestação do licenciamento sobre a barragem.",
+    "doc_titulo": "Portaria 10607/2026",
+    "doc_arquivo": "docs/outorgas/portaria_10607_2026.pdf",
+    "hist_titulo": "Portaria 25408/2023 (substituída)",
+    "hist_arquivo": "docs/outorgas/portaria_25408_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -51,24 +27,22 @@
   {
    "type": "Feature",
    "properties": {
-    "nome": "Captação – Agropecuária Lunardelli · Captação",
-    "situacao": "Extinta",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga prévia",
-    "Portaria": "527/2021",
-    "Emissão": "20/07/2021",
-    "Validade": "20/07/2023",
-    "Vazão": "159,9 m³/h",
-    "Corpo hídrico": "Mina/Nascente",
-    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
-    "Requerente": "Agropecuária Lunardelli Ltda",
-    "Protocolo": "158057719"
+    "nome": "Represa Sede · Captação (nascente)",
+    "situacao": "Vencida",
+    "Interferência": "Captação superficial (outorga de direito)",
+    "Portaria": "980/2021",
+    "Validade": "08/11/2024",
+    "Vazão": "6,5 m³/h",
+    "Finalidade": "Criação animal (confinamento)",
+    "Condicionantes": "Fonte de água declarada na Licença de Operação do confinamento. Outorga vencida: precisa ser renovada.",
+    "doc_titulo": "Portaria 980/2021",
+    "doc_arquivo": "docs/outorgas/portaria_980_2021.pdf"
    },
    "geometry": {
     "type": "Point",
     "coordinates": [
-     -50.689232,
-     -23.475305
+     -50.706829,
+     -23.472948
     ]
    }
   },
@@ -76,16 +50,16 @@
    "type": "Feature",
    "properties": {
     "nome": "Represa Gema · Barragem",
-    "situacao": "Extinta",
-    "Interferência": "Barragem/soleira",
-    "Tipo de portaria": "outorga prévia",
-    "Portaria": "25217/2023/OP-GOUT",
-    "Emissão": "16/08/2023",
-    "Validade": "14/08/2025",
-    "Corpo hídrico": "Córrego",
-    "Finalidade": "Acumulação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "199858432"
+    "situacao": "Vigente",
+    "Interferência": "Barragem (outorga prévia)",
+    "Portaria": "10206/2026/OP-GOUT",
+    "Validade": "04/02/2027",
+    "Finalidade": "Acumulação para captação",
+    "Condicionantes": "Não será renovada: obter a outorga de direito até 04/02/2027. Adequar vertedouro e dispositivo de vazão mínima (prazo 05/04/2026). Barragem classe D: Inspeção de Segurança Regular em até 12 meses.",
+    "doc_titulo": "Portaria 10206/2026",
+    "doc_arquivo": "docs/outorgas/portaria_10206_2026.pdf",
+    "hist_titulo": "Portaria 25217/2023 (substituída)",
+    "hist_arquivo": "docs/outorgas/portaria_25217_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -98,18 +72,39 @@
   {
    "type": "Feature",
    "properties": {
+    "nome": "Represa Gema · Captação do Pivô Chapadão",
+    "situacao": "Vigente",
+    "Interferência": "Captação superficial (outorga prévia)",
+    "Portaria": "10428/2026/OP-GOUT",
+    "Validade": "02/03/2028",
+    "Vazão": "178,98 m³/h (21 h/dia)",
+    "Finalidade": "Irrigação por pivô central – 53,09 ha",
+    "Condicionantes": "Redimensionar a bomba para a vazão outorgada. Medição horária da vazão com envio anual (primeiro envio até 02/03/2027).",
+    "doc_titulo": "Portaria 10428/2026",
+    "doc_arquivo": "docs/outorgas/portaria_10428_2026.pdf"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -50.68922,
+     -23.475268
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
     "nome": "Represa Nova · Captação",
-    "situacao": "Extinta",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga prévia",
-    "Portaria": "11250/2021/OP-GOUT",
-    "Emissão": "13/12/2021",
-    "Validade": "20/07/2023",
-    "Vazão": "146,7 m³/h",
-    "Corpo hídrico": "Mina/Nascente",
-    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "183265180"
+    "situacao": "Vigente",
+    "Interferência": "Captação superficial (outorga prévia)",
+    "Portaria": "10913/2025/OP-GOUT",
+    "Validade": "30/04/2027",
+    "Finalidade": "Irrigação por pivô e abastecimento de pulverizadores",
+    "Condicionantes": "Instalar medidor de vazão captada (prazo 30/01/2027).",
+    "doc_titulo": "Portaria 10913/2025",
+    "doc_arquivo": "docs/outorgas/portaria_10913_2025.pdf",
+    "hist_titulo": "Portaria 11250/2021 (substituída)",
+    "hist_arquivo": "docs/outorgas/portaria_11250_2021.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -124,15 +119,13 @@
    "properties": {
     "nome": "Represa Nova · Barragem",
     "situacao": "Em renovação",
-    "Interferência": "Barragem/soleira",
-    "Tipo de portaria": "outorga prévia",
+    "Interferência": "Barragem (outorga prévia)",
     "Portaria": "26031/2023/OP-GOUT",
-    "Emissão": "08/11/2023",
     "Validade": "06/11/2025",
-    "Corpo hídrico": "Córrego",
     "Finalidade": "Acumulação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "199858416"
+    "Condicionantes": "Vencida em 06/11/2025, em renovação no IAT. A captação da Represa Nova depende desta barragem.",
+    "doc_titulo": "Portaria 26031/2023",
+    "doc_arquivo": "docs/outorgas/portaria_26031_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -145,18 +138,15 @@
   {
    "type": "Feature",
    "properties": {
-    "nome": "Represa Itaipu (Gema) · Captação",
+    "nome": "Represa Itaipu · Captação (Gema)",
     "situacao": "Em regularização",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga prévia",
+    "Interferência": "Captação superficial (outorga prévia)",
     "Portaria": "24252/2023/OP-GOUT",
-    "Emissão": "15/05/2023",
     "Validade": "20/07/2023",
-    "Vazão": "228,3 m³/h",
-    "Corpo hídrico": "Represa",
-    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "204364761"
+    "Finalidade": "Irrigação e pulverizadores",
+    "Condicionantes": "Vencida em 20/07/2023, em regularização no IAT.",
+    "doc_titulo": "Portaria 24252/2023",
+    "doc_arquivo": "docs/outorgas/portaria_24252_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -169,18 +159,15 @@
   {
    "type": "Feature",
    "properties": {
-    "nome": "Represa Itaipu (Jangadinha 1) · Captação",
+    "nome": "Represa Itaipu · Captação (Jangadinha 1)",
     "situacao": "Em regularização",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga prévia",
+    "Interferência": "Captação superficial (outorga prévia)",
     "Portaria": "24249/2023/OP-GOUT",
-    "Emissão": "15/05/2023",
     "Validade": "20/07/2023",
-    "Vazão": "152,2 m³/h",
-    "Corpo hídrico": "Represa",
-    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "204364770"
+    "Finalidade": "Irrigação e pulverizadores",
+    "Condicionantes": "Vencida em 20/07/2023, em regularização no IAT.",
+    "doc_titulo": "Portaria 24249/2023",
+    "doc_arquivo": "docs/outorgas/portaria_24249_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -193,18 +180,15 @@
   {
    "type": "Feature",
    "properties": {
-    "nome": "Represa Itaipu (Farinheira) · Captação",
+    "nome": "Represa Itaipu · Captação (Farinheira)",
     "situacao": "Em regularização",
-    "Interferência": "Captação superficial",
-    "Tipo de portaria": "outorga prévia",
+    "Interferência": "Captação superficial (outorga prévia)",
     "Portaria": "24254/2023/OP-GOUT",
-    "Emissão": "23/05/2023",
     "Validade": "20/07/2023",
-    "Vazão": "187,75 m³/h",
-    "Corpo hídrico": "Represa",
-    "Finalidade": "Abastecimento de pulverizadores, Irrigação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "204364745"
+    "Finalidade": "Irrigação e pulverizadores",
+    "Condicionantes": "Vencida em 20/07/2023, em regularização no IAT.",
+    "doc_titulo": "Portaria 24254/2023",
+    "doc_arquivo": "docs/outorgas/portaria_24254_2023.pdf"
    },
    "geometry": {
     "type": "Point",
@@ -218,16 +202,14 @@
    "type": "Feature",
    "properties": {
     "nome": "Represa Itaipu (Farinheira) · Barragem",
-    "situacao": "Irregular",
-    "Interferência": "Barragem/soleira",
-    "Tipo de portaria": "outorga prévia",
+    "situacao": "Vencida",
+    "Interferência": "Barragem (outorga prévia)",
     "Portaria": "24756/2023/OP-GOUT",
-    "Emissão": "06/07/2023",
     "Validade": "05/07/2025",
-    "Corpo hídrico": "Córrego",
     "Finalidade": "Acumulação",
-    "Requerente": "Inova Agropecuaria Ltda",
-    "Protocolo": "199858386"
+    "Condicionantes": "Vencida em 05/07/2025 (irregular no IAT). A renovação depende da execução dos extravasores.",
+    "doc_titulo": "Portaria 24756/2023",
+    "doc_arquivo": "docs/outorgas/portaria_24756_2023.pdf"
    },
    "geometry": {
     "type": "Point",
