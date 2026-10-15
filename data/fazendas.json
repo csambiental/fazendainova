@@ -401,5 +401,121 @@
       ],
       "listar": true
     }
+  ],
+  "prazos": [
+    {
+      "titulo": "Licença de Operação do confinamento (LOR 214184)",
+      "data": "2026-12-18",
+      "andamento": "Renovação em andamento no IAT",
+      "documento": {
+        "titulo": "Licença de Operação nº 214184",
+        "arquivo": "docs/licenca_operacao_regularizacao_LOR_214184.pdf"
+      }
+    },
+    {
+      "titulo": "Medidor de vazão – captação da Represa Nova",
+      "data": "2027-01-30",
+      "nota": "Condicionante da portaria 10913/2025",
+      "documento": {
+        "titulo": "Portaria 10913/2025",
+        "arquivo": "docs/outorgas/portaria_10913_2025.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga prévia da barragem da Represa Gema e Inspeção de Segurança",
+      "data": "2027-02-04",
+      "nota": "Não será renovada: obter a outorga de direito e entregar a Inspeção de Segurança Regular",
+      "documento": {
+        "titulo": "Portaria 10206/2026",
+        "arquivo": "docs/outorgas/portaria_10206_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Relatório anual de vazão – Pivô Chapadão",
+      "data": "2027-03-02",
+      "nota": "Condicionante da portaria 10428/2026",
+      "documento": {
+        "titulo": "Portaria 10428/2026",
+        "arquivo": "docs/outorgas/portaria_10428_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga prévia da captação da Represa Nova",
+      "data": "2027-04-30",
+      "documento": {
+        "titulo": "Portaria 10913/2025",
+        "arquivo": "docs/outorgas/portaria_10913_2025.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga prévia da captação do Pivô Chapadão",
+      "data": "2028-03-02",
+      "documento": {
+        "titulo": "Portaria 10428/2026",
+        "arquivo": "docs/outorgas/portaria_10428_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga prévia da barragem da Represa Sede",
+      "data": "2028-03-19",
+      "documento": {
+        "titulo": "Portaria 10607/2026",
+        "arquivo": "docs/outorgas/portaria_10607_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Vertedouro e vazão mínima da Represa Gema",
+      "data": "2026-04-05",
+      "andamento": "Em execução · prorrogação de prazo solicitada ao IAT",
+      "documento": {
+        "titulo": "Portaria 10206/2026",
+        "arquivo": "docs/outorgas/portaria_10206_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Vertedouro da Represa Sede",
+      "data": "2026-09-15",
+      "andamento": "Em execução · prorrogação de prazo solicitada ao IAT",
+      "documento": {
+        "titulo": "Portaria 10607/2026",
+        "arquivo": "docs/outorgas/portaria_10607_2026.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga da captação da Represa Sede (980/2021)",
+      "data": "2024-11-08",
+      "andamento": "Renovação em andamento",
+      "documento": {
+        "titulo": "Portaria 980/2021",
+        "arquivo": "docs/outorgas/portaria_980_2021.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga da barragem da Represa Nova (26031/2023)",
+      "data": "2025-11-06",
+      "andamento": "Em renovação no IAT",
+      "documento": {
+        "titulo": "Portaria 26031/2023",
+        "arquivo": "docs/outorgas/portaria_26031_2023.pdf"
+      }
+    },
+    {
+      "titulo": "Outorga da barragem da Represa Itaipu – Farinheira (24756/2023)",
+      "data": "2025-07-05",
+      "andamento": "Extravasores em execução · prorrogação solicitada",
+      "documento": {
+        "titulo": "Portaria 24756/2023",
+        "arquivo": "docs/outorgas/portaria_24756_2023.pdf"
+      }
+    },
+    {
+      "titulo": "Outorgas das captações da Represa Itaipu (24249, 24252 e 24254/2023)",
+      "data": "2023-07-20",
+      "andamento": "Em regularização no IAT",
+      "documento": {
+        "titulo": "Portaria 24252/2023",
+        "arquivo": "docs/outorgas/portaria_24252_2023.pdf"
+      }
+    }
   ]
 }

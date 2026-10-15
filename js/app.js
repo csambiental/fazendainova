@@ -223,6 +223,59 @@ function renderLegenda() {
     el.querySelectorAll('.lg-doc').forEach(b => b.addEventListener('click', () => abrirDocumento(b.dataset.titulo, b.dataset.arquivo)));
 }
 
+// ---------- próximos vencimentos ----------
+// Regras de cor: vencido sem providência = vermelho; vencido com providência em andamento = laranja;
+// vence em até 90 dias = amarelo; mais de 90 dias = verde.
+function renderPrazos(prazos) {
+    const card = document.getElementById('cardPrazos');
+    if (!prazos || !prazos.length) return;
+    card.hidden = false;
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    const dia = 86400000;
+    const itens = prazos.map(p => {
+        const [a, m, d] = p.data.split('-').map(Number);
+        const data = new Date(a, m - 1, d);
+        const dias = Math.round((data - hoje) / dia);
+        let classe, rotuloPrazo;
+        if (dias < 0) {
+            classe = p.andamento ? 'andamento' : 'vencido';
+            const meses = Math.round(-dias / 30.4);
+            rotuloPrazo = meses >= 2 ? `vencido há ${meses} meses` : `vencido há ${-dias} dias`;
+        } else {
+            classe = dias <= 90 ? 'proximo' : 'ok';
+            const meses = Math.round(dias / 30.4);
+            rotuloPrazo = dias === 0 ? 'vence hoje' : (dias <= 60 ? `em ${dias} dias` : `em ${meses} meses`);
+        }
+        return { ...p, dataTxt: `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${a}`, dias, classe, rotuloPrazo };
+    });
+    // Ordem: vencidos sem providência, próximos (por data), vencidos em andamento
+    const peso = { vencido: 0, proximo: 1, ok: 1, andamento: 2 };
+    itens.sort((x, y) => peso[x.classe] - peso[y.classe] || (x.classe === 'andamento' ? y.dias - x.dias : x.dias - y.dias));
+    const LIMITE = 6;
+    const lista = document.getElementById('listaPrazos');
+    const desenhar = (todos) => {
+        lista.innerHTML = (todos ? itens : itens.slice(0, LIMITE)).map(p => `
+            <li class="prazo ${p.classe}">
+                <div class="prazo-data"><strong>${p.dataTxt}</strong><span>${p.rotuloPrazo}</span></div>
+                <div class="prazo-txt">
+                    ${esc(p.titulo)}
+                    ${p.andamento ? `<small class="prazo-and">${esc(p.andamento)}</small>` : ''}
+                    ${p.nota ? `<small>${esc(p.nota)}</small>` : ''}
+                    ${p.documento ? `<button type="button" class="doc-btn" data-titulo="${esc(p.documento.titulo)}" data-arquivo="${esc(p.documento.arquivo)}">📄 ${esc(p.documento.titulo)}</button>` : ''}
+                </div>
+            </li>`).join('');
+        lista.querySelectorAll('.doc-btn').forEach(b => b.addEventListener('click', () => abrirDocumento(b.dataset.titulo, b.dataset.arquivo)));
+    };
+    desenhar(false);
+    const btn = document.getElementById('verTodosPrazos');
+    if (itens.length > LIMITE) {
+        btn.hidden = false;
+        btn.textContent = `Ver todos (${itens.length})`;
+        let todos = false;
+        btn.onclick = () => { todos = !todos; desenhar(todos); btn.textContent = todos ? 'Mostrar menos' : `Ver todos (${itens.length})`; };
+    }
+}
+
 // ---------- mapa ----------
 function adicionarCamadas() {
     fazendas.forEach(f => {
@@ -476,6 +529,7 @@ async function iniciar() {
     renderResumo();
     renderFazendas();
     renderLegenda();
+    renderPrazos(dados.prazos);
     const pronto = () => { adicionarCamadas(); enquadrarTodas(); };
     if (map.isStyleLoaded()) pronto(); else map.once('load', pronto);
 }
