@@ -277,3 +277,38 @@ table.ind td small { color: var(--texto-suave); margin-left: 4px; }
 table.ind tr + tr { border-top: 1px solid var(--borda); }
 table.ind tr.neg td { color: #b3261e; font-weight: 600; }
 table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
+
+/* ---------- legenda sobre o mapa ---------- */
+.map-legend {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 2;
+    max-width: 260px;
+    background: rgba(255, 255, 255, .95);
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    padding: 10px 12px;
+    font-size: .8rem;
+}
+.map-legend h4 { margin: 0 0 6px; font-size: .85rem; color: var(--verde-escuro); }
+.lg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    width: 100%;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+}
+.lg-item i { flex: 0 0 auto; display: inline-block; }
+.lg-area { width: 16px; height: 12px; border: 2px solid; border-radius: 3px; }
+.lg-fill { width: 14px; height: 14px; border-radius: 50%; opacity: .8; border: 1px solid #0b3d24; }
+.lg-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.lg-ring { width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid; }
+.lg-doc { cursor: pointer; font-weight: 600; text-decoration: underline dotted; border-radius: 4px; padding: 3px 4px; margin-left: -4px; }
+.lg-doc:hover, .lg-doc:focus-visible { background: #fff3cd; outline: none; }
+@media (max-width: 800px) { .map-legend { font-size: .72rem; max-width: 190px; } }

@@ -20,6 +20,8 @@ const PALETA = ['#ff6b4a', '#4fc3f7', '#ba68c8', '#ffd54f', '#81c784', '#f06292'
 
 let fazendas = [];
 let geojsons = {};
+let camadas = [];       // camadas extras (pivôs, represas...)
+const camadasData = {};
 let selecionada = null;
 let mostrarPreenchimento = true;
 
@@ -162,6 +164,28 @@ function indicadoresHtml(f) {
     return `<h3>Indicadores do CAR</h3><table class="ind">${linhas}</table>`;
 }
 
+function docBotao(titulo, arquivo) {
+    if (!arquivo) return '';
+    return `<button type="button" class="doc-btn" onclick="abrirDocumento('${esc(titulo)}', '${esc(arquivo)}')">📄 ${esc(titulo)}</button>`;
+}
+
+// Legenda sobre o mapa: fazendas, camadas extras e pontos (com documento clicável)
+function renderLegenda() {
+    const el = document.getElementById('legend');
+    if (!el) return;
+    const itens = [];
+    fazendas.forEach(f => itens.push(`<div class="lg-item"><i class="lg-area" style="border-color:${f.cor};background:${f.cor}33"></i>${esc(f.nome)}</div>`));
+    camadas.forEach(c => itens.push(`<div class="lg-item"><i class="${c.tipo === 'fill' ? 'lg-fill' : 'lg-dot'}" style="background:${c.cor}"></i>${esc(c.nome)}</div>`));
+    fazendas.forEach(f => (f.pontos || []).forEach(p => {
+        const conteudo = `<i class="lg-ring" style="border-color:${f.cor}"></i>${esc(p.nome)}`;
+        itens.push(p.documento
+            ? `<button type="button" class="lg-item lg-doc" data-titulo="${esc(p.documento.titulo)}" data-arquivo="${esc(p.documento.arquivo)}" title="Ver ${esc(p.documento.titulo)}">${conteudo} 📄</button>`
+            : `<div class="lg-item">${conteudo}</div>`);
+    }));
+    el.innerHTML = `<h4>Legenda</h4>${itens.join('')}`;
+    el.querySelectorAll('.lg-doc').forEach(b => b.addEventListener('click', () => abrirDocumento(b.dataset.titulo, b.dataset.arquivo)));
+}
+
 // ---------- mapa ----------
 function adicionarCamadas() {
     fazendas.forEach(f => {
@@ -182,10 +206,33 @@ function adicionarCamadas() {
             paint: { 'line-color': f.cor, 'line-width': 2.5 }
         });
     });
+    // Camadas extras definidas em data/fazendas.json -> "camadas"
+    camadas.forEach(c => {
+        const g = camadasData[c.id];
+        if (!g || map.getSource(`cam-${c.id}`)) return;
+        map.addSource(`cam-${c.id}`, { type: 'geojson', data: g });
+        if (c.tipo === 'fill') {
+            map.addLayer({ id: `cam-${c.id}`, type: 'fill', source: `cam-${c.id}`, paint: { 'fill-color': c.cor, 'fill-opacity': 0.45 } });
+            map.addLayer({ id: `cam-${c.id}-line`, type: 'line', source: `cam-${c.id}`, paint: { 'line-color': '#0b3d24', 'line-width': 1.5 } });
+        } else {
+            map.addLayer({ id: `cam-${c.id}`, type: 'circle', source: `cam-${c.id}`,
+                paint: { 'circle-radius': 8, 'circle-color': c.cor, 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 } });
+        }
+        try {
+            map.addLayer({
+                id: `cam-${c.id}-label`, type: 'symbol', source: `cam-${c.id}`, minzoom: 12.5,
+                layout: { 'text-field': ['get', 'nome'], 'text-size': 12, 'text-font': ['DIN Pro Medium', 'Arial Unicode MS Regular'],
+                          ...(c.tipo === 'fill' ? {} : { 'text-offset': [0, 1.2], 'text-anchor': 'top' }) },
+                paint: { 'text-color': '#ffffff', 'text-halo-color': '#000000', 'text-halo-width': 1.3 }
+            });
+        } catch (err) { console.warn('Rótulos indisponíveis', err); }
+    });
+
     // Pontos de interesse (estruturas, represas, pivôs)
     const pontos = fazendas.flatMap(f => (f.pontos || []).map(p => ({
         type: 'Feature',
-        properties: { nome: p.nome, descricao: p.descricao || '', fazenda: f.id, cor: f.cor },
+        properties: { nome: p.nome, descricao: p.descricao || '', fazenda: f.id, cor: f.cor,
+                      doc_titulo: p.documento ? p.documento.titulo : '', doc_arquivo: p.documento ? p.documento.arquivo : '' },
         geometry: { type: 'Point', coordinates: p.coord }
     })));
     if (pontos.length && !map.getSource('pontos')) {
@@ -276,8 +323,18 @@ map.on('click', (e) => {
         if (pt.length) {
             const p = pt[0].properties;
             new mapboxgl.Popup({ maxWidth: '280px' }).setLngLat(pt[0].geometry.coordinates)
-                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3><p>${esc(p.descricao)}</p></div>`).addTo(map);
+                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3><p>${esc(p.descricao)}</p>${docBotao(p.doc_titulo, p.doc_arquivo)}</div>`).addTo(map);
             selecionarFazenda(p.fazenda, false);
+            return;
+        }
+    }
+    const camIds = (window.camadasExtras || []).filter(id => map.getLayer(id));
+    if (camIds.length) {
+        const hit = map.queryRenderedFeatures(e.point, { layers: camIds });
+        if (hit.length) {
+            const p = hit[0].properties;
+            new mapboxgl.Popup({ maxWidth: '280px' }).setLngLat(e.lngLat)
+                .setHTML(`<div class="popup"><h3>${esc(p.nome)}</h3><p>${esc(p.descricao || '')}</p></div>`).addTo(map);
             return;
         }
     }
@@ -299,6 +356,7 @@ map.on('click', (e) => {
 map.on('mousemove', (e) => {
     const camadas = fazendas.map(f => `${f.id}-fill`).filter(id => map.getLayer(id));
     if (map.getLayer('pontos')) camadas.push('pontos');
+    window.camadasExtras?.forEach(id => { if (map.getLayer(id)) camadas.push(id); });
     const over = camadas.length && map.queryRenderedFeatures(e.point, { layers: camadas }).length > 0;
     map.getCanvas().style.cursor = over ? 'pointer' : '';
 });
@@ -353,8 +411,15 @@ async function iniciar() {
             console.error(`Não foi possível carregar ${f.arquivo}`, err);
         }
     }));
+    camadas = dados.camadas || [];
+    window.camadasExtras = camadas.map(c => `cam-${c.id}`);
+    await Promise.all(camadas.map(async c => {
+        try { camadasData[c.id] = await (await fetch(c.arquivo, { cache: 'no-cache' })).json(); }
+        catch (err) { console.error(`Não foi possível carregar ${c.arquivo}`, err); }
+    }));
     renderResumo();
     renderFazendas();
+    renderLegenda();
     const pronto = () => { adicionarCamadas(); enquadrarTodas(); };
     if (map.isStyleLoaded()) pronto(); else map.once('load', pronto);
 }

@@ -1,9 +1,9 @@
 {
   "cliente": {
-    "nome": "Inova Agropecuária",
-    "subtitulo": "Diagnóstico e acompanhamento ambiental · São Sebastião da Amoreira, PR",
+    "nome": "Fazenda Sete Lagos",
+    "subtitulo": "Inova Agropecuária · São Sebastião da Amoreira, PR",
     "centro": [
-      -50.685,
+      -50.69,
       -23.477
     ],
     "zoom": 13
@@ -13,7 +13,7 @@
     {
       "id": "AREA1",
       "arquivo": "data/area1.geojson",
-      "nome": "Fazenda Cachoeira – sede e confinamento",
+      "nome": "Fazenda Sete Lagos – área do confinamento",
       "car": "PR-4126009-580FECBA316642FFB49D796F599A76CF",
       "area_ha": 185.46,
       "cor": "#ff6b4a",
@@ -120,7 +120,7 @@
     {
       "id": "AREA2",
       "arquivo": "data/area2.geojson",
-      "nome": "Fazenda Sete Lagos – represas e pivô",
+      "nome": "Fazenda Sete Lagos – represas e pivôs",
       "car": "PR-4126009-950975FD4C98483D8147792940690205",
       "area_ha": 977.94,
       "cor": "#4fc3f7",
@@ -133,32 +133,7 @@
         "Saldo de Reserva Legal": -35.6,
         "APP a recompor": 0.63
       },
-      "pontos": [
-        {
-          "nome": "Pivô Chapadão",
-          "coord": [
-            -50.691022,
-            -23.479672
-          ],
-          "descricao": "Pivô central com 51,62 ha irrigados, captação na Represa Gema."
-        },
-        {
-          "nome": "Represa Gema",
-          "coord": [
-            -50.68437,
-            -23.475658
-          ],
-          "descricao": "Espelho d'água de 8,18 ha e volume de 323.713 m³."
-        },
-        {
-          "nome": "Represa Itaipu (Faxineira)",
-          "coord": [
-            -50.675261,
-            -23.4761
-          ],
-          "descricao": "Represa com estudo hidrológico e análise de risco (2023)."
-        }
-      ],
+      "pontos": [],
       "adequacoes": [
         {
           "item": "Estudos hidrológicos e análise de risco das represas Gema e Itaipu (Faxineira)",
@@ -260,6 +235,22 @@
           ]
         }
       ]
+    }
+  ],
+  "camadas": [
+    {
+      "id": "pivos",
+      "nome": "Pivôs de irrigação",
+      "arquivo": "data/pivos.geojson",
+      "tipo": "fill",
+      "cor": "#1de084"
+    },
+    {
+      "id": "represas",
+      "nome": "Represas",
+      "arquivo": "data/represas.geojson",
+      "tipo": "circle",
+      "cor": "#1e88e5"
     }
   ]
 }
