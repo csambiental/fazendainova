@@ -97,8 +97,8 @@
         },
         {
           "item": "Renovação da Licença de Operação (vence em 18/12/2026)",
-          "status": "Pendente",
-          "nota": "A renovação deve ser pedida com 120 dias de antecedência (até 20/08/2026) para a licença ficar prorrogada automaticamente. Confirmar se o pedido foi protocolado.",
+          "status": "Em andamento",
+          "nota": "Processo de renovação da licença iniciado no IAT. A LOR nº 214184 vence em 18/12/2026.",
           "documentos": [
             {
               "titulo": "Licença de Operação de Regularização nº 214184",
@@ -107,9 +107,9 @@
           ]
         },
         {
-          "item": "Regularizar a captação da Represa Sede (portaria 980/2021)",
-          "status": "Pendente",
-          "nota": "Outorga de direito vencida em 08/11/2024. É a fonte de água declarada na Licença de Operação (6,5 m³/h).",
+          "item": "Renovar a outorga da captação da Represa Sede (portaria 980/2021)",
+          "status": "Em andamento",
+          "nota": "Renovação em andamento. Outorga de direito vencida em 08/11/2024; é a fonte de água declarada na Licença de Operação (6,5 m³/h).",
           "documentos": [
             {
               "titulo": "Portaria 980/2021",
@@ -119,8 +119,8 @@
         },
         {
           "item": "Adequar o vertedouro da Represa Sede e obter a outorga de direito da barragem",
-          "status": "Pendente",
-          "nota": "Outorga prévia 10607/2026 válida até 19/03/2028. Prazo da adequação do vertedouro: 15/09/2026.",
+          "status": "Em andamento",
+          "nota": "Outorga prévia 10607/2026 válida até 19/03/2028. Adequação do vertedouro (prazo original 15/09/2026). Adequações em execução; solicitada prorrogação de prazo ao IAT.",
           "documentos": [
             {
               "titulo": "Portaria 10607/2026",
@@ -244,8 +244,8 @@
         },
         {
           "item": "Regularizar a barragem da Represa Itaipu (Farinheira) (portaria 24756/2023)",
-          "status": "Pendente",
-          "nota": "Outorga prévia vencida em 05/07/2025; a renovação depende da execução dos extravasores.",
+          "status": "Em andamento",
+          "nota": "Outorga prévia vencida em 05/07/2025; a renovação depende da execução dos extravasores. Adequações em execução; solicitada prorrogação de prazo ao IAT.",
           "documentos": [
             {
               "titulo": "Portaria 24756/2023",
@@ -267,8 +267,8 @@
         },
         {
           "item": "Represa Gema: vertedouro, vazão mínima, Inspeção de Segurança e outorga de direito",
-          "status": "Pendente",
-          "nota": "A outorga prévia não será renovada: obter a outorga de direito até 04/02/2027. Adequar vertedouro e vazão mínima (prazo 05/04/2026) e entregar a Inspeção de Segurança Regular (barragem classe D).",
+          "status": "Em andamento",
+          "nota": "Vertedouro e dispositivo de vazão mínima (prazo original 05/04/2026), Inspeção de Segurança Regular e outorga de direito até 04/02/2027. Adequações em execução; solicitada prorrogação de prazo ao IAT.",
           "documentos": [
             {
               "titulo": "Portaria 10206/2026",
