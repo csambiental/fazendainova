@@ -331,3 +331,15 @@ table.ind tr.pos td { color: #1d6b3e; font-weight: 600; }
 .popup-dl { margin: 0; font-size: .8rem; }
 .popup-dl dt { color: var(--texto-suave); font-size: .72rem; margin-top: 6px; }
 .popup-dl dd { margin: 0; }
+
+/* ---------- modo de ajuste dos pivôs (?ajustar) ---------- */
+.ajuste-painel {
+    position: absolute; right: 54px; top: 10px; z-index: 6;
+    width: 210px; background: #fff; border-radius: 10px; box-shadow: var(--sombra);
+    padding: 10px 12px; font-size: .8rem; display: flex; flex-direction: column; gap: 6px;
+}
+.ajuste-painel p { margin: 0; color: var(--texto-suave); }
+.aj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; text-align: center; align-items: center; }
+.aj-grid button, .aj-raio button { border: 1px solid var(--verde); background: #f1f8f3; border-radius: 6px; padding: 5px 0; cursor: pointer; font: inherit; }
+.aj-raio { display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; align-items: center; text-align: center; }
+.aj-passo { display: flex; gap: 6px; align-items: center; }

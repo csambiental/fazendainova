@@ -480,3 +480,69 @@ async function iniciar() {
     if (map.isStyleLoaded()) pronto(); else map.once('load', pronto);
 }
 iniciar();
+
+// =====================================================================
+// Modo de ajuste dos pivôs: abra o mapa com ?ajustar no final do endereço
+// (ex.: .../fazendainova/?ajustar). Clique num pivô e use os botões para
+// mover (5 m por clique) e mudar o raio. Depois clique em "Copiar ajustes"
+// e cole o texto na conversa com a CS para gravar no mapa.
+// =====================================================================
+if (new URLSearchParams(location.search).has('ajustar')) {
+    let selecionado = null;
+    const painel = document.createElement('div');
+    painel.className = 'ajuste-painel';
+    painel.innerHTML = `
+        <strong>Ajuste dos pivôs</strong>
+        <p id="ajNome">Clique num pivô no mapa</p>
+        <div class="aj-grid">
+            <span></span><button data-m="0,5">▲ N</button><span></span>
+            <button data-m="-5,0">◀ O</button><span id="ajPasso">5 m</span><button data-m="5,0">L ▶</button>
+            <span></span><button data-m="0,-5">▼ S</button><span></span>
+        </div>
+        <div class="aj-raio"><button data-r="-5">− raio</button><span id="ajRaio">–</span><button data-r="5">+ raio</button></div>
+        <label class="aj-passo"><input type="checkbox" id="ajFino"> passos de 1 m</label>
+        <button id="ajCopiar" class="btn btn-solid">Copiar ajustes</button>
+        <small id="ajMsg"></small>`;
+    document.querySelector('.map-wrap').appendChild(painel);
+
+    const fonte = () => map.getSource('cam-pivos');
+    const dados = () => camadasData.pivos;
+    const redesenhar = (f) => {
+        const p = f.properties;
+        f.geometry = turf.circle(p.centro, p.raio_m / 1000, { steps: 72, units: 'kilometers' }).geometry;
+        p.descricao = `Raio de ${p.raio_m} m · cerca de ${fmt(Math.PI * p.raio_m ** 2 / 10000, 1)} ha irrigados`;
+        fonte().setData(dados());
+        document.getElementById('ajRaio').textContent = `${p.raio_m} m`;
+    };
+    const passo = () => (document.getElementById('ajFino').checked ? 1 : 5);
+    document.getElementById('ajFino').addEventListener('change', () => {
+        document.getElementById('ajPasso').textContent = `${passo()} m`;
+    });
+
+    map.on('click', 'cam-pivos', (e) => {
+        const nome = e.features[0].properties.nome;
+        selecionado = dados().features.find(f => f.properties.nome === nome);
+        document.getElementById('ajNome').textContent = nome;
+        document.getElementById('ajRaio').textContent = `${selecionado.properties.raio_m} m`;
+    });
+    painel.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', () => {
+        if (!selecionado) return;
+        const [dx, dy] = b.dataset.m.split(',').map(Number).map(v => Math.sign(v) * passo());
+        const p = selecionado.properties;
+        const lat = p.centro[1];
+        p.centro = [p.centro[0] + dx / (111320 * Math.cos(lat * Math.PI / 180)), p.centro[1] + dy / 110574];
+        p.centro = p.centro.map(v => Math.round(v * 1e6) / 1e6);
+        redesenhar(selecionado);
+    }));
+    painel.querySelectorAll('[data-r]').forEach(b => b.addEventListener('click', () => {
+        if (!selecionado) return;
+        selecionado.properties.raio_m = Math.max(50, selecionado.properties.raio_m + Math.sign(Number(b.dataset.r)) * passo());
+        redesenhar(selecionado);
+    }));
+    document.getElementById('ajCopiar').addEventListener('click', async () => {
+        const texto = 'AJUSTE PIVÔS\n' + dados().features.map(f =>
+            `${f.properties.nome}: centro ${f.properties.centro[1]}, ${f.properties.centro[0]} · raio ${f.properties.raio_m} m`).join('\n');
+        try { await navigator.clipboard.writeText(texto); document.getElementById('ajMsg').textContent = 'Copiado! Cole na conversa.'; }
+        catch { prompt('Copie o texto abaixo:', texto); }
+    });
+}
